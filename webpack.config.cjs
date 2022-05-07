@@ -40,6 +40,14 @@ module.exports = {
           { loader: 'sass-loader' },
         ],
       },
+      {
+        test: /\.jpeg$/i,
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
+      },
     ],
   },
 };
