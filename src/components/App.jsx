@@ -3,9 +3,9 @@ import {
   Routes, Route,
 } from 'react-router-dom';
 
-import Home from './components/Home.jsx';
-import Login from './components/Login.jsx';
-import NotFound from './components/NotFound.jsx';
+import Home from './Home.jsx';
+import Login from './Login/Login.jsx';
+import NotFound from './NotFound.jsx';
 
 export default function App() {
   return (
