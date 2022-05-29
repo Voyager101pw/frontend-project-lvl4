@@ -1,41 +1,54 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable react/jsx-props-no-spreading */
-import React, { useRef, useEffect } from 'react';
+import React, {
+  useRef, useEffect, useContext, useState,
+} from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
+import axios from 'axios';
 import * as yup from 'yup';
 
-import makeRequest from './makeRequest.js';
+import routes from '../../routes.js';
+import AuthContext from '../../contexts/index.jsx';
 import logo from './logo.jpeg';
 
 function Login() {
-  // const inputRef = useRef();
-  // useEffect(() => {
-  //   inputRef.current.focus();
-  // }, []);
+  const [authFailed, setAuthFailed] = useState(false);
+  const auth = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  const params = {
+  const inputRef = useRef();
+  useEffect(() => {
+    inputRef.current.focus();
+    if (localStorage.getItem('token')) {
+      auth.logIn();
+      navigate('/');
+    }
+  }, []);
+
+  const formik = useFormik({
     initialValues: {
-      username: '',
-      password: '',
+      username: 'admin',
+      password: 'admin',
     },
-    onSubmit: makeRequest,
+    onSubmit: async (data) => {
+      const { data: { token } } = await axios.post(routes.loginPath(), data)
+        .catch(() => ({ data: { token: null } }));
+      if (token) {
+        auth.logIn();
+        localStorage.setItem('token', token);
+        navigate('/');
+      } else {
+        setAuthFailed(true);
+      }
+    },
     validationSchema: yup.object().shape({
       username: yup.string().required(),
       password: yup.string().required(),
     }),
-    validateOnChange: false,
-    validateOnBlur: false,
-  };
-  const formik = useFormik(params);
+  });
 
   return (
     <div className="d-flex flex-column h-100">
-      <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
-        <div className="container">
-          <a href="/" className="navbar-brand">Hexlet Chat</a>
-        </div>
-      </nav>
       <div className="container-fluid h-100">
         <div className="row justify-content-center align-content-center h-100">
           <div className="col-12 col-md-8 col-xxl-6">
@@ -55,7 +68,8 @@ function Login() {
                         placeholder="Ваш ник"
                         onChange={formik.handleChange}
                         value={formik.values.username}
-                        // ref={}
+                        isInvalid={authFailed}
+                        ref={inputRef}
                         required
                       />
                       <Form.Label>Ваш ник</Form.Label>
@@ -70,11 +84,11 @@ function Login() {
                         placeholder="Пароль"
                         onChange={formik.handleChange}
                         value={formik.values.password}
-                        // isInvalid
+                        isInvalid={authFailed}
                         required
                       />
                       <Form.Label>Пароль</Form.Label>
-                      {/* <Form.Control.Feedback className="d-flex bg-danger rounded text-white py-1 px-2" type="invalid">Неверные имя пользователя или пароль</Form.Control.Feedback> */}
+                      <Form.Control.Feedback type="invalid">Неверные имя пользователя или пароль</Form.Control.Feedback>
                     </Form.Group>
 
                     <Button type="submit" variant="outline-primary" className="w-100 mb-3">Войти</Button>
