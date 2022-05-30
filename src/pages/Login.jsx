@@ -7,9 +7,9 @@ import { useFormik } from 'formik';
 import axios from 'axios';
 import * as yup from 'yup';
 
-import routes from '../../routes.js';
-import AuthContext from '../../contexts/index.jsx';
-import logo from './logo.jpeg';
+import routes from '../routes.js';
+import AuthContext from '../contexts/index.jsx';
+import logo from '../../public/auth_logo.jpeg';
 
 function Login() {
   const [authFailed, setAuthFailed] = useState(false);
@@ -19,10 +19,6 @@ function Login() {
   const inputRef = useRef();
   useEffect(() => {
     inputRef.current.focus();
-    if (localStorage.getItem('token')) {
-      auth.logIn();
-      navigate('/');
-    }
   }, []);
 
   const formik = useFormik({
@@ -30,15 +26,19 @@ function Login() {
       username: 'admin',
       password: 'admin',
     },
-    onSubmit: async (data) => {
-      const { data: { token } } = await axios.post(routes.loginPath(), data)
-        .catch(() => ({ data: { token: null } }));
-      if (token) {
+    onSubmit: async (authData) => {
+      try {
+        const { data: token } = await axios.post(routes.loginPath(), authData);
+        localStorage.setItem('userId', JSON.stringify(token));
         auth.logIn();
-        localStorage.setItem('token', token);
         navigate('/');
-      } else {
-        setAuthFailed(true);
+      } catch (error) {
+        if (error.isAxiosError && error.response.status === 401) {
+          inputRef.current.select();
+          setAuthFailed(true);
+          return;
+        }
+        throw error;
       }
     },
     validationSchema: yup.object().shape({
