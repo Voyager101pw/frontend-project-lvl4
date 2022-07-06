@@ -7,7 +7,7 @@ export default function Navi() {
   const { loggedIn, logOut } = useContext(AuthContext);
   const navigate = useNavigate();
   return (
-    <>
+    <div className="d-flex flex-column h-100">
       <Navbar bg="white" className="shadow-sm">
         <Container expand="lg" className="me-auto">
           <Navbar.Brand href="/">Hexlet Chat</Navbar.Brand>
@@ -23,6 +23,6 @@ export default function Navi() {
         </Container>
       </Navbar>
       <Outlet />
-    </>
+    </div>
   );
 }

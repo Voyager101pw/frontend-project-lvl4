@@ -12,15 +12,22 @@ import useAuth from './hooks/useAuth.jsx';
 import AuthContext from './contexts/index.jsx';
 
 function AuthProvider({ children }) {
-  const [loggedIn, setloggedIn] = useState(false);
+  const token = localStorage.getItem('userId') ?? false;
+  const isAuth = Boolean(token);
+
+  const [loggedIn, setloggedIn] = useState(isAuth);
+
   const logIn = () => {
     setloggedIn(true);
   };
+
   const logOut = () => {
     localStorage.removeItem('userId');
     setloggedIn(false);
   };
+
   const value = useMemo(() => ({ loggedIn, logIn, logOut }), [loggedIn]);
+
   return (
     <AuthContext.Provider value={value}>
       {children}
@@ -28,9 +35,14 @@ function AuthProvider({ children }) {
   );
 }
 
-function PrivatePage() {
-  const auth = useAuth();
-  return auth.loggedIn ? <Chat /> : <Navigate to="/login" />;
+function ChatPage() {
+  const { loggedIn } = useAuth();
+  return loggedIn ? <Chat /> : <Navigate to="/login" />;
+}
+
+function LoginPage() {
+  const { loggedIn } = useAuth();
+  return loggedIn ? <Navigate to="/" /> : <Login />;
 }
 
 export default function App() {
@@ -39,8 +51,8 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<Navigation />}>
-            <Route path="/" element={<PrivatePage />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<ChatPage />} />
+            <Route path="/login" element={<LoginPage />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
