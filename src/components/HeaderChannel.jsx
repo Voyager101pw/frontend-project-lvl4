@@ -10,11 +10,10 @@ function HeaderChannel() {
   const messagesLength = ids.filter((id) => entities[id].channelId === idCurrentChannel).length;
 
   const nameSelectedChannel = useSelector(selectNameSelectedChannel);
-
   return (
     <div className="mb-4 p-3 shadow-sm small bg-light">
       <p className="mb-0">
-        <b>{`# ${nameSelectedChannel}`}</b>
+        <b>{nameSelectedChannel ? `# ${nameSelectedChannel}` : 'Канал не выбран!'}</b>
       </p>
       <span className="text-secondary">{`${messagesLength} сообщений`}</span>
     </div>

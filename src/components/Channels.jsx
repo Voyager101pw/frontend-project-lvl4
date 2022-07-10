@@ -19,8 +19,6 @@ function Channels() {
   const ids = useSelector(selectIdsChannels);
   const idCurrentChanndel = useSelector(selectIdCurrentChannel);
 
-  if (!ids.length) return null;
-
   const selectChannel = (id) => (e) => {
     dispatch(toggleCurrentChannel(id));
     e.target.blur();

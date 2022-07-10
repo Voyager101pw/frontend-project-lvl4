@@ -13,7 +13,6 @@ function MessagesBoard() {
   useEffect(() => {
     messagesBoxRef.current.scrollTop = messagesBoxRef.current.scrollHeight;
   });
-
   const messages = ids.reduce((acc, id) => {
     if (entities[id].channelId !== idCurrentChannel) return acc;
     const { id: idMessage, username, text } = entities[id];

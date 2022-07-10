@@ -30,8 +30,8 @@ const { username } = JSON.parse(localStorage.getItem('userId'));
 function MessageInput() {
   const dispatch = useDispatch;
   const inputRef = useRef();
-  const id = useSelector(selectNewIdMessage);
-  const channelId = useSelector(selectIdCurrentChannel);
+  // const id = useSelector(selectNewIdMessage);
+  // const channelId = useSelector(selectIdCurrentChannel);
 
   const f = useFormik({
     initialValues: { text: '' },

@@ -8,12 +8,12 @@ import axios from 'axios';
 import * as yup from 'yup';
 
 import routes from '../routes.js';
-import AuthContext from '../contexts/index.jsx';
+import AuthContext from '../contexts/AuthContext.jsx';
 import logo from '../../public/auth_logo.jpeg';
 
 function Login() {
   const [authFailed, setAuthFailed] = useState(false);
-  const auth = useContext(AuthContext);
+  const auth = useContext(AuthContext); // useAuth hook
   const navigate = useNavigate();
 
   const inputRef = useRef();

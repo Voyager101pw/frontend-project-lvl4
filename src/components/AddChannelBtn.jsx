@@ -15,7 +15,6 @@ function AddChannelBtn() {
   const handleOpenModal = () => {
     dispatch(openModal({ type: 'add' }));
   };
-
   return (
     <div className="d-flex ps-4 pe-2 mb-2 justify-content-between">
       <span>Каналы</span>

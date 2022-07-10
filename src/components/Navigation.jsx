@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Navbar, Container, Button } from 'react-bootstrap';
 import { Outlet, useNavigate } from 'react-router-dom';
-import AuthContext from '../contexts/index.jsx';
+import AuthContext from '../contexts/AuthContext.jsx';
 
 export default function Navi() {
   const { loggedIn, logOut } = useContext(AuthContext);

@@ -7,7 +7,9 @@ import routes from '../routes.js';
 // import { fetchChannels } from '../slices/channels/channelsSlice.js';
 
 // MOCK
-import { mockChannels, mockMessages, mockCurrentChannelId, mockModal } from '../mockData.js';
+import {
+  mockChannels, mockMessages, mockCurrentChannelId, mockModal,
+} from '../mockData.js';
 
 // Channel Slice
 import { addManyChannels, setCurrentChannelId } from '../slices/channels/channelsSlice.js';
@@ -33,21 +35,25 @@ export default function Home() {
     const headers = { headers: { Authorization: `Bearer ${token}` } };
     const fetchData = async () => {
       const { data } = await axios.get(routes.usersPath(), headers);
-      // https://react-redux.js.org/api/batch
-      // Если вы используете React 18, вам не нужно использовать batchAPI.
+      const { channels, messages, currentChannelId } = data;
+      // Если вы используете React 18, вам не нужно использовать batch API.
       // React 18 автоматически группирует все обновления состояния, независимо
       // от того, где они находятся в очереди.
-      dispatch(addManyChannels(mockChannels));
-      dispatch(setCurrentChannelId(mockCurrentChannelId));
-      dispatch(addManyProps(mockModal));
-      dispatch(addManyMessages(mockMessages));
+      // dispatch(setCurrentChannelId(mockCurrentChannelId));
+      // dispatch(addManyChannels(mockChannels));
+      // dispatch(addManyMessages(mockMessages));
+      // dispatch(addManyProps(mockModal));
+      dispatch(addManyChannels(channels));
+      dispatch(addManyMessages(messages));
+      dispatch(setCurrentChannelId(currentChannelId));
+      // dispatch(addManyProps(mockModal));
       // batch() - позволяет объединять любые обновления React в такте цикла событий
       // в один проход рендеринга. React уже использует это внутри для собственных
       // обратных вызовов обработчиков событий.
+      // https://react-redux.js.org/api/batch
     };
     fetchData();
-  }, []);
-
+  }, [dispatch]);
   return (
     <div className="container my-4 h-100 overflow-hidden rounded shadow">
       <div className="row h-100 flex-md-row shadow bg-white">
