@@ -19,6 +19,7 @@ const buildState = (defaultState) => {
     currentChannelId: generalChannelId,
     users: [
       { id: 1, username: 'admin', password: 'admin' },
+      { id: 2, username: '123', password: '123' },
     ],
   };
 
@@ -60,7 +61,6 @@ export default (app, defaultState = {}) => {
         removable: true,
         id: getNextId(),
       };
-
       state.channels.push(channelWithId);
       acknowledge({ status: 'ok', data: channelWithId });
       app.io.emit('newChannel', channelWithId);

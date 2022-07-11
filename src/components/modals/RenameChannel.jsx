@@ -4,10 +4,12 @@ import { Modal, Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { selectChannelById, renameChannel } from '../../slices/channels/channelsSlice';
+import { selectChannelById } from '../../slices/channels/channelsSlice';
 import { closeModal, selectEditableId } from '../../slices/modal/modalSlice';
+import useSocket from '../../hooks/useSocket.jsx';
 
 function ModalRenameChannel() {
+  const socket = useSocket();
   const idEditableChannel = useSelector(selectEditableId);
   const { name } = useSelector((state) => selectChannelById(state, idEditableChannel));
   const dispatch = useDispatch();
@@ -19,9 +21,15 @@ function ModalRenameChannel() {
 
   const f = useFormik({
     initialValues: { channelName: name },
-    onSubmit: ({ channelName }) => {
-      dispatch(renameChannel({ id: idEditableChannel, name: channelName }));
-      dispatch(closeModal());
+    onSubmit: async ({ channelName }) => {
+      try {
+        await socket.promisifyEmit('renameChannel', { id: idEditableChannel, name: channelName });
+        dispatch(closeModal());
+        // success toast
+      } catch (textError) {
+        console.warn(textError);
+        // fail toast
+      }
     },
     validationSchema: yup.object({
       channelName: yup

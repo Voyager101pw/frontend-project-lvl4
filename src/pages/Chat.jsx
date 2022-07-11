@@ -1,27 +1,17 @@
 import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import routes from '../routes.js';
 
-// import { fetchChannels } from '../slices/channels/channelsSlice.js';
-
 // MOCK
-import {
-  mockChannels, mockMessages, mockCurrentChannelId, mockModal,
-} from '../mockData.js';
+// import {
+//   mockChannels, mockMessages, mockCurrentChannelId, mockModal,
+// } from '../mockData.js';
 
-// Channel Slice
 import { addManyChannels, setCurrentChannelId } from '../slices/channels/channelsSlice.js';
-
-// Messages Slice ----------
 import { addManyMessages } from '../slices/messages/messagesSlice.js';
 
-// Modal Slice
-import { addManyProps } from '../slices/modal/modalSlice.js';
-
 import ShowModal from '../components/modals/index.jsx';
-
 import AddChannelBtn from '../components/AddChannelBtn.jsx';
 import Channels from '../components/Channels.jsx';
 import HeaderChannel from '../components/HeaderChannel.jsx';
@@ -57,19 +47,16 @@ export default function Home() {
   return (
     <div className="container my-4 h-100 overflow-hidden rounded shadow">
       <div className="row h-100 flex-md-row shadow bg-white">
-
         <div className="col-4 col-md-2 px-0 border-end pt-5 bg-light">
           <AddChannelBtn />
           <Channels />
         </div>
-
         <div className="col p-0 h-100">
           <div className="d-flex flex-column h-100">
             <HeaderChannel />
             <MessagesBoard />
             <MessageInput />
           </div>
-
         </div>
         <ShowModal />
       </div>

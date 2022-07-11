@@ -1,19 +1,17 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
+import { DropdownButton, Dropdown } from 'react-bootstrap';
 import { openModal } from '../slices/modal/modalSlice';
 
 import {
-  removeChannel, toggleCurrentChannel,
+  toggleCurrentChannel,
   selectEntitiesChannels, selectIdCurrentChannel, selectIdsChannels,
 } from '../slices/channels/channelsSlice';
-
-const showMenuHandle = (e) => {
-  document.querySelectorAll('.dropdown-menu').forEach((elm) => elm.classList.contains('show') && elm.classList.remove('show'));
-  e.target.nextSibling.classList.toggle('show');
-};
+import useSocket from '../hooks/useSocket.jsx';
 
 function Channels() {
+  const socket = useSocket();
   const dispatch = useDispatch();
   const channels = useSelector(selectEntitiesChannels);
   const ids = useSelector(selectIdsChannels);
@@ -24,11 +22,23 @@ function Channels() {
     e.target.blur();
   };
 
-  const elements = ids.map((id) => {
+  const handleRemoveChannel = async (id) => {
+    try {
+      await socket.promisifyEmit('removeChannel', { id });
+      // success toast
+    } catch (textError) {
+      console.warn(textError);
+      // fail toast
+    }
+  };
+  const handleRenameChannel = (id) => {
+    dispatch(openModal({ type: 'rename', idChannel: id }));
+  };
+
+  const items = ids.map((id) => {
     const { name: channelName, removable } = channels[id];
     const isSelected = id === idCurrentChanndel;
     const channelClass = cn('btn w-100 rounded-0 d-flex', { 'btn-secondary': isSelected });
-    const dropdownClass = cn('flex-grow-0 dropdown-toggle dropdown-toggle-split btn', { 'btn-secondary': isSelected });
     return (
       <li className="nav-item" key={id}>
         { removable
@@ -37,21 +47,14 @@ function Channels() {
               <button type="button" className={channelClass} onClick={selectChannel(id)}>
                 <span>{`# ${channelName}`}</span>
               </button>
-              <button type="button" className={dropdownClass} onClick={showMenuHandle}>
-                <span className="visually-hidden">Управление каналом</span>
-              </button>
-              <div
-                className="dropdown-menu"
-                data-popper-placement="bottom-start"
-                style={{
-                  position: 'absolute',
-                  inset: '0px auto auto 0px',
-                  transform: 'translate(113px, 40px)',
-                }}
-              >
-                <a href="#" tabIndex="0" className="dropdown-item" onClick={() => dispatch(removeChannel(id))}>Удалить</a>
-                <a href="#" tabIndex="0" className="dropdown-item" onClick={() => dispatch(openModal({ type: 'rename', idChannel: id }))}>Переименовать</a>
-              </div>
+              <DropdownButton variant={isSelected ? 'secondary' : 'btn-secondary'} title="">
+                <Dropdown.Item href="#" onClick={() => handleRemoveChannel(id)}>
+                  Удалить
+                </Dropdown.Item>
+                <Dropdown.Item href="#" onClick={() => handleRenameChannel(id)}>
+                  Переименовать
+                </Dropdown.Item>
+              </DropdownButton>
             </div>
           )
           : (
@@ -65,7 +68,7 @@ function Channels() {
 
   return (
     <ul className="nav flex-column nav-pills nav-fill px-2">
-      {elements}
+      {items}
     </ul>
   );
 }

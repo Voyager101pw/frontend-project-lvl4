@@ -1,16 +1,16 @@
 import React, { useRef, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Modal, Form, Button } from 'react-bootstrap';
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { closeModal } from '../../slices/modal/modalSlice';
-import { selectNewId, addChannel } from '../../slices/channels/channelsSlice';
+import useSocket from '../../hooks/useSocket.jsx';
 
 function ModalAddChannel() {
+  const socket = useSocket();
   const inputRef = useRef();
-  const newId = useSelector(selectNewId);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -19,9 +19,15 @@ function ModalAddChannel() {
 
   const f = useFormik({
     initialValues: { channelName: '' },
-    onSubmit: ({ channelName }) => {
-      dispatch(addChannel({ id: newId, name: channelName, removable: true }));
-      dispatch(closeModal());
+    onSubmit: async ({ channelName: name }) => {
+      try {
+        await socket.promisifyEmit('newChannel', { name });
+        dispatch(closeModal());
+        // success toast
+      } catch (textError) {
+        console.warn(textError);
+        // fail toast
+      }
     },
     validationSchema: yup.object({
       channelName: yup

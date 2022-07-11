@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import AuthContext from '../contexts/AuthContext.jsx';
 
 function AuthProvider({ children }) {
-  const { token, username } = JSON.parse(localStorage.getItem('userId'));
+  const { token, username } = JSON.parse(localStorage.getItem('userId')) ?? {};
   const isAuth = Boolean(token);
 
   const [loggedIn, setloggedIn] = useState(isAuth);

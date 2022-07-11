@@ -5,8 +5,6 @@ import { selectIdCurrentChannel } from '../slices/channels/channelsSlice.js';
 import { selectAllMessages, selectIdsMessages } from '../slices/messages/messagesSlice.js';
 
 function MessagesBoard() {
-  console.log(2)
-
   const ids = useSelector(selectIdsMessages);
   const entities = useSelector(selectAllMessages);
   const idCurrentChannel = useSelector(selectIdCurrentChannel);

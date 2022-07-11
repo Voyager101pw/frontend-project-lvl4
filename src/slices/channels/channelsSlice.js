@@ -39,24 +39,13 @@ export const {
   selectEntities: selectEntitiesChannels,
 } = channelsAdapter.getSelectors((state) => state.channels);
 
-// export const selectIdCurrentChannel = (state) => state.channels.currentChannelId ?? null;
 export const selectIdCurrentChannel = createSelector(
   (state) => state,
   (state) => state.channels.currentChannelId,
 );
-// export const selectIdsChannels = createSelector(
-//   [(state) => state],
-//   (state) => state.channels.ids,
-// );
-// export const selectEntitiesChannels = createSelector(
-//   [(state) => state],
-//   (state) => state.channels.entities,
-// );
 
 export const selectNameSelectedChannel = (state) => {
   const channels = state.channels.entities;
   const currentId = state.channels.currentChannelId;
   return channels[currentId]?.name;
 };
-
-export const selectNewId = (state) => state.channels.ids.length + 1;

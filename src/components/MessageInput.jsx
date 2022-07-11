@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Form, Button, InputGroup } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { selectIdCurrentChannel } from '../slices/channels/channelsSlice.js';
 import useSocket from '../hooks/useSocket.jsx';
@@ -26,16 +26,30 @@ const svgArrowRight = (
 );
 
 function MessageInput() {
-  const [inputValue, setInputValue] = useState('');
-  const { addMessage } = useSocket();
-  const { username } = useAuth();
-  const idCurrentChannel = useSelector(selectIdCurrentChannel);
+  const [text, setText] = useState('');
+  const inputRef = useRef();
 
-  const handleSubmit = (e) => {
+  const socket = useSocket();
+  const { username } = useAuth();
+
+  const channelId = useSelector(selectIdCurrentChannel);
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
+
+  const handleChange = (e) => setText(e.target.value);
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    addMessage(idCurrentChannel, username, inputValue); // evnet: newMessage (Websocket)
+    try {
+      await socket.promisifyEmit('newMessage', { channelId, username, text });
+      setText('');
+      // success toast
+    } catch (textError) {
+      console.warn(textError);
+      // fail toast
+    }
   };
-  const handleChange = (e) => setInputValue(e.target.value);
 
   return (
     <div className="mt-auto px-5 py-3">
@@ -49,8 +63,9 @@ function MessageInput() {
             placeholder="Введите сообщение..."
             className="border-0 p-0 ps-2"
             name="text"
-            value={inputValue}
+            value={text}
             onChange={handleChange}
+            ref={inputRef}
           />
           <Button
             type="submit"
