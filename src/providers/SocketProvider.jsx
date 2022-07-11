@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 import SocketContext from '../contexts/SocketContext.jsx';
 
-function SocketProvider({ socket, children }) {
+function SocketProvider({socket, children }) {
+  console.log('x')
   const addChannel = (name) => socket.emit('newChannel', { name }, (res) => {
     console.log(res);
   });

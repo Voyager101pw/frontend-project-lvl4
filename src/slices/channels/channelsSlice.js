@@ -1,5 +1,7 @@
 import {
-  createSlice, createEntityAdapter, createSelector,
+  createSlice,
+  createEntityAdapter, // Normalized structure, CRUD reducers, ready selectors form normalize struc.
+  createSelector, // Because included code from the "Reselect" library (memoization feature)
 } from '@reduxjs/toolkit';
 
 const channelsAdapter = createEntityAdapter();

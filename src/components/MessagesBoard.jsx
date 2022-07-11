@@ -5,6 +5,8 @@ import { selectIdCurrentChannel } from '../slices/channels/channelsSlice.js';
 import { selectAllMessages, selectIdsMessages } from '../slices/messages/messagesSlice.js';
 
 function MessagesBoard() {
+  console.log(2)
+
   const ids = useSelector(selectIdsMessages);
   const entities = useSelector(selectAllMessages);
   const idCurrentChannel = useSelector(selectIdCurrentChannel);
@@ -13,6 +15,7 @@ function MessagesBoard() {
   useEffect(() => {
     messagesBoxRef.current.scrollTop = messagesBoxRef.current.scrollHeight;
   });
+
   const messages = ids.reduce((acc, id) => {
     if (entities[id].channelId !== idCurrentChannel) return acc;
     const { id: idMessage, username, text } = entities[id];

@@ -1,7 +1,6 @@
 import {
   createSlice,
   createEntityAdapter,
-  createSelector, // because included code from the "Reselect" library (memoization feature)
 } from '@reduxjs/toolkit';
 
 const messagesAdapter = createEntityAdapter();
@@ -24,8 +23,3 @@ export const {
   selectById: selectMessageById,
   selectEntities: selectAllMessages,
 } = messagesAdapter.getSelectors((state) => state.messages);
-
-export const selectNewIdMessage = createSelector(
-  (state) => state.messages.ids,
-  (ids) => ids[ids.length] + 1,
-);

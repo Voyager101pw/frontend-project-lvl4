@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import AuthContext from '../contexts/AuthContext.jsx';
 
 function AuthProvider({ children }) {
-  const token = localStorage.getItem('userId') ?? false;
+  const { token, username } = JSON.parse(localStorage.getItem('userId'));
   const isAuth = Boolean(token);
 
   const [loggedIn, setloggedIn] = useState(isAuth);
@@ -17,7 +17,9 @@ function AuthProvider({ children }) {
   };
 
   // https://github.com/jsx-eslint/eslint-plugin-react/blob/master/docs/rules/jsx-no-constructed-context-values.md
-  const value = useMemo(() => ({ loggedIn, logIn, logOut }), [loggedIn]);
+  const value = useMemo(() => ({
+    username, loggedIn, logIn, logOut,
+  }), [loggedIn]);
 
   return (
     <AuthContext.Provider value={value}>

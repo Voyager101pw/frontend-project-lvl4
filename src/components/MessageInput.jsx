@@ -1,10 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Form, Button, InputGroup } from 'react-bootstrap';
-import { useFormik } from 'formik';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { selectNewIdMessage, addOneMessage } from '../slices/messages/messagesSlice.js';
 import { selectIdCurrentChannel } from '../slices/channels/channelsSlice.js';
+import useSocket from '../hooks/useSocket.jsx';
+import useAuth from '../hooks/useAuth.jsx';
 
 const svgArrowRight = (
   <svg
@@ -25,38 +25,32 @@ const svgArrowRight = (
   </svg>
 );
 
-const { username } = JSON.parse(localStorage.getItem('userId'));
-
 function MessageInput() {
-  const dispatch = useDispatch;
-  const inputRef = useRef();
-  // const id = useSelector(selectNewIdMessage);
-  // const channelId = useSelector(selectIdCurrentChannel);
+  const [inputValue, setInputValue] = useState('');
+  const { addMessage } = useSocket();
+  const { username } = useAuth();
+  const idCurrentChannel = useSelector(selectIdCurrentChannel);
 
-  const f = useFormik({
-    initialValues: { text: '' },
-    onSubmit: ({ text }) => {
-      // Not work
-      // dispatch(addOneMessage({
-      //   id, channelId, username, text,
-      // }));
-    },
-  });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    addMessage(idCurrentChannel, username, inputValue); // evnet: newMessage (Websocket)
+  };
+  const handleChange = (e) => setInputValue(e.target.value);
 
   return (
     <div className="mt-auto px-5 py-3">
       <Form
-        validated={false}
+        noValidate
         className="border rounded-2 py-1"
-        onSubmit={f.handleSubmit}
+        onSubmit={handleSubmit}
       >
         <InputGroup>
           <Form.Control
             placeholder="Введите сообщение..."
             className="border-0 p-0 ps-2"
             name="text"
-            value={f.values.text}
-            onChange={f.handleChange}
+            value={inputValue}
+            onChange={handleChange}
           />
           <Button
             type="submit"
