@@ -1,7 +1,9 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
-import { DropdownButton, Dropdown } from 'react-bootstrap';
+import {
+  Dropdown, ButtonGroup, Button,
+} from 'react-bootstrap';
 import { openModal } from '../slices/modal/modalSlice';
 
 import {
@@ -43,18 +45,21 @@ function Channels() {
       <li className="nav-item" key={id}>
         { removable
           ? (
-            <div role="group" className="d-flex dropdown btn-group">
-              <button type="button" className={channelClass} onClick={selectChannel(id)}>
-                <span>{`# ${channelName}`}</span>
-              </button>
-              <DropdownButton variant={isSelected ? 'secondary' : 'btn-secondary'} title="">
-                <Dropdown.Item href="#" onClick={() => handleRemoveChannel(id)}>
-                  Удалить
-                </Dropdown.Item>
-                <Dropdown.Item href="#" onClick={() => handleRenameChannel(id)}>
-                  Переименовать
-                </Dropdown.Item>
-              </DropdownButton>
+            <div role="group" className="d-flex ">
+              <Dropdown as={ButtonGroup} className="w-100">
+                <Button type="button" variant={channelClass} onClick={selectChannel(id)}>
+                  {`# ${channelName}`}
+                </Button>
+                <Dropdown.Toggle split variant={isSelected ? 'secondary' : 'btn-secondary'} />
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => handleRemoveChannel(id)}>
+                    Удалить
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => handleRenameChannel(id)}>
+                    Переименовать
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </div>
           )
           : (
