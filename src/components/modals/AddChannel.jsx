@@ -1,5 +1,5 @@
-import React, { useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useRef, useEffect, useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Modal, Form, Button } from 'react-bootstrap';
 
 import { useFormik } from 'formik';
@@ -7,6 +7,7 @@ import * as yup from 'yup';
 
 import { closeModal } from '../../slices/modal/modalSlice';
 import useSocket from '../../hooks/useSocket.jsx';
+import { selectIdsChannels as selectIds, selectEntitiesChannels as selectChannels, setCurrentChannelId } from '../../slices/channels/channelsSlice.js';
 
 function ModalAddChannel() {
   const socket = useSocket();
@@ -17,12 +18,16 @@ function ModalAddChannel() {
     inputRef.current.focus();
   }, []);
 
+  const [ids, channels] = useSelector((state) => [selectIds(state), selectChannels(state)]);
+  const listChannelNames = useMemo(() => ids.map((id) => channels[id].name), []);
+
   const f = useFormik({
     initialValues: { channelName: '' },
     onSubmit: async ({ channelName: name }) => {
       try {
-        await socket.promisifyEmit('newChannel', { name });
+        const { id } = await socket.promisifyEmit('newChannel', { name }); // id - id added channel
         dispatch(closeModal());
+        dispatch(setCurrentChannelId(id));
         // success toast
       } catch (textError) {
         console.warn(textError);
@@ -32,9 +37,15 @@ function ModalAddChannel() {
     validationSchema: yup.object({
       channelName: yup
         .string()
+        .trim()
         .required('Обязательное поле')
         .min(3, 'От 3 до 20 символов')
-        .max(20, 'От 3 до 20 символов'),
+        .max(20, 'От 3 до 20 символов')
+        .test(
+          'is unique',
+          'Имя канала должно быть уникальным',
+          (newName) => !listChannelNames.includes(newName),
+        ),
     }),
   });
 
