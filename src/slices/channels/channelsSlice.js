@@ -13,7 +13,12 @@ const channelsSlice = createSlice({
     // CRUD reducers from entityAdapter
     addManyChannels: channelsAdapter.addMany,
     addChannel: channelsAdapter.addOne,
-    removeChannel: channelsAdapter.removeOne,
+    removeChannel: (state, { payload: id }) => {
+      channelsAdapter.removeOne(state, id);
+      if (state.currentChannelId === id) {
+        state.currentChannelId = 1;
+      }
+    },
     renameChannel: channelsAdapter.upsertOne,
 
     // Custom reducers
@@ -44,8 +49,12 @@ export const selectIdCurrentChannel = createSelector(
   (state) => state.channels.currentChannelId,
 );
 
-export const selectNameSelectedChannel = (state) => {
-  const channels = state.channels.entities;
-  const currentId = state.channels.currentChannelId;
-  return channels[currentId]?.name;
-};
+export const selectNameSelectedChannel = createSelector(
+  [(state) => state.channels.entities, (state) => state.channels.currentChannelId],
+  (channels, currentId) => channels[currentId]?.name,
+);
+
+export const selectChannelNames = createSelector(
+  [(state) => state.channels.ids, (state) => state.channels.entities],
+  (ids, channels) => ids.map((id) => channels[id].name),
+);

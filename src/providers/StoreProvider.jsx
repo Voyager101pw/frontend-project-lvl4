@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import store from '../store';
 import { addChannel, removeChannel, renameChannel } from '../slices/channels/channelsSlice';
-import { addOneMessage } from '../slices/messages/messagesSlice.js';
+import { addOneMessage, removeMessagesChannel } from '../slices/messages/messagesSlice.js';
 import useSocket from '../hooks/useSocket.jsx';
 
 function StoreProvider({ children }) {
@@ -14,6 +14,7 @@ function StoreProvider({ children }) {
 
   socket.on('removeChannel', ({ id }) => {
     store.dispatch(removeChannel(id));
+    store.dispatch(removeMessagesChannel(id));
   });
 
   socket.on('renameChannel', (channel) => {

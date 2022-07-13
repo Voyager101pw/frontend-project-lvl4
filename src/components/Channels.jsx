@@ -1,19 +1,15 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
-import {
-  Dropdown, ButtonGroup, Button,
-} from 'react-bootstrap';
-import { openModal } from '../slices/modal/modalSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { Dropdown, ButtonGroup, Button } from 'react-bootstrap';
 
+import { openModal } from '../slices/modal/modalSlice';
 import {
-  toggleCurrentChannel,
-  selectEntitiesChannels, selectIdCurrentChannel, selectIdsChannels,
+  toggleCurrentChannel, selectEntitiesChannels,
+  selectIdCurrentChannel, selectIdsChannels,
 } from '../slices/channels/channelsSlice';
-import useSocket from '../hooks/useSocket.jsx';
 
 function Channels() {
-  const socket = useSocket();
   const dispatch = useDispatch();
   const channels = useSelector(selectEntitiesChannels);
   const ids = useSelector(selectIdsChannels);
@@ -22,19 +18,6 @@ function Channels() {
   const selectChannel = (id) => (e) => {
     dispatch(toggleCurrentChannel(id));
     e.target.blur();
-  };
-
-  const handleRemoveChannel = async (id) => {
-    try {
-      await socket.promisifyEmit('removeChannel', { id });
-      // success toast
-    } catch (textError) {
-      console.warn(textError);
-      // fail toast
-    }
-  };
-  const handleRenameChannel = (id) => {
-    dispatch(openModal({ type: 'rename', idChannel: id }));
   };
 
   const items = ids.map((id) => {
@@ -52,10 +35,10 @@ function Channels() {
                 </Button>
                 <Dropdown.Toggle split variant={isSelected ? 'secondary' : 'btn-secondary'} />
                 <Dropdown.Menu>
-                  <Dropdown.Item onClick={() => handleRemoveChannel(id)}>
+                  <Dropdown.Item onClick={() => dispatch(openModal({ type: 'Remove', idChannel: id }))}>
                     Удалить
                   </Dropdown.Item>
-                  <Dropdown.Item onClick={() => handleRenameChannel(id)}>
+                  <Dropdown.Item onClick={() => dispatch(openModal({ type: 'Rename', idChannel: id }))}>
                     Переименовать
                   </Dropdown.Item>
                 </Dropdown.Menu>

@@ -4,16 +4,17 @@ import { Modal, Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { selectChannelById } from '../../slices/channels/channelsSlice';
+import { selectChannelById, selectChannelNames } from '../../slices/channels/channelsSlice';
 import { closeModal, selectEditableId } from '../../slices/modal/modalSlice';
 import useSocket from '../../hooks/useSocket.jsx';
 
-function ModalRenameChannel() {
+function ModalRenameChannel({ onHide }) {
   const socket = useSocket();
   const idEditableChannel = useSelector(selectEditableId);
   const { name } = useSelector((state) => selectChannelById(state, idEditableChannel));
   const dispatch = useDispatch();
   const inputRef = useRef();
+  const channelNames = useSelector(selectChannelNames);
 
   useEffect(() => {
     inputRef.current.focus();
@@ -34,9 +35,15 @@ function ModalRenameChannel() {
     validationSchema: yup.object({
       channelName: yup
         .string()
+        .trim()
         .required('Обязательное поле')
         .min(3, 'От 3 до 20 символов')
-        .max(20, 'От 3 до 20 символов'),
+        .max(20, 'От 3 до 20 символов')
+        .test(
+          'is unique',
+          'Имя канала должно быть уникальным',
+          (newName) => !channelNames.includes(newName),
+        ),
     }),
   });
 
@@ -59,7 +66,7 @@ function ModalRenameChannel() {
             <Form.Control.Feedback type="invalid">{f.errors.channelName}</Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="d-flex justify-content-end">
-            <Button variant="secondary" className="me-2" onClick={() => dispatch(closeModal())}>Отменить</Button>
+            <Button variant="secondary" className="me-2" onClick={onHide}>Отменить</Button>
             <Button variant="primary" type="submit">Отправить</Button>
           </Form.Group>
         </Form>

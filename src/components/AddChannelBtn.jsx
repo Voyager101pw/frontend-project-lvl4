@@ -13,7 +13,7 @@ function AddChannelBtn() {
   const dispatch = useDispatch();
 
   const handleOpenModal = () => {
-    dispatch(openModal({ type: 'add' }));
+    dispatch(openModal({ type: 'Add' }));
   };
   return (
     <div className="d-flex ps-4 pe-2 mb-2 justify-content-between">
