@@ -9,10 +9,4 @@ export default configureStore({
     messages: messagesSlice,
     modal: modalSlice,
   },
-  preloadedState: {
-    channels: {
-      entities: {},
-      ids: [],
-    },
-  },
 });
