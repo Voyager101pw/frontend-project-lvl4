@@ -75,7 +75,7 @@ function Login() {
                       <Form.Label>Ваш ник</Form.Label>
                     </Form.Group>
 
-                    <Form.Group className="form-floating mb-2">
+                    <Form.Group className="form-floating mb-4">
                       <Form.Control
                         name="password"
                         id="password"
@@ -88,10 +88,10 @@ function Login() {
                         required
                       />
                       <Form.Label>Пароль</Form.Label>
-                      <Form.Control.Feedback type="invalid">Неверные имя пользователя или пароль</Form.Control.Feedback>
+                      <Form.Control.Feedback tooltip type="invalid">Неверные имя пользователя или пароль</Form.Control.Feedback>
                     </Form.Group>
 
-                    <Button type="submit" variant="outline-primary" className="w-100 mb-3">Войти</Button>
+                    <Button type="submit" variant="outline-primary" className="w-100">Войти</Button>
                   </Form>
                 </div>
               </div>

@@ -9,6 +9,7 @@ import NotFound from './pages/NotFound.jsx';
 import Navigation from './components/Navigation.jsx';
 
 import useAuth from './hooks/useAuth.jsx';
+import Sign from './pages/Sign.jsx';
 
 function ChatPage() {
   const { loggedIn } = useAuth();
@@ -20,6 +21,11 @@ function LoginPage() {
   return loggedIn ? <Navigate to="/" /> : <Login />;
 }
 
+function SignUpPage() {
+  const { loggedIn } = useAuth();
+  return loggedIn ? <Navigate to="/" /> : <Sign />;
+}
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -27,7 +33,8 @@ export default function App() {
         <Route element={<Navigation />}>
           <Route path="/" element={<ChatPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>
