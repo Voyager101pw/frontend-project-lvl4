@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Form, Button, InputGroup } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { selectIdCurrentChannel } from '../slices/channels/channelsSlice.js';
 import useSocket from '../hooks/useSocket.jsx';
@@ -28,6 +29,7 @@ const svgArrowRight = (
 function MessageInput() {
   const [text, setText] = useState('');
   const inputRef = useRef();
+  const { t } = useTranslation();
 
   const socket = useSocket();
   const { username } = useAuth();
@@ -60,7 +62,7 @@ function MessageInput() {
       >
         <InputGroup>
           <Form.Control
-            placeholder="Введите сообщение..."
+            placeholder={t('chatPage.input')}
             className="border-0 p-0 ps-2"
             name="text"
             value={text}

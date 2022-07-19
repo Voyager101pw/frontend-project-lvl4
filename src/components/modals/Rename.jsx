@@ -3,17 +3,20 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import { useTranslation } from 'react-i18next';
 
 import { selectChannelById, selectChannelNames } from '../../slices/channels/channelsSlice';
 import { closeModal, selectEditableId } from '../../slices/modal/modalSlice';
 import useSocket from '../../hooks/useSocket.jsx';
 
 function ModalRenameChannel({ onHide }) {
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
+  const inputRef = useRef();
+
   const socket = useSocket();
   const idEditableChannel = useSelector(selectEditableId);
   const { name } = useSelector((state) => selectChannelById(state, idEditableChannel));
-  const dispatch = useDispatch();
-  const inputRef = useRef();
   const channelNames = useSelector(selectChannelNames);
 
   useEffect(() => {
@@ -36,12 +39,12 @@ function ModalRenameChannel({ onHide }) {
       channelName: yup
         .string()
         .trim()
-        .required('Обязательное поле')
-        .min(3, 'От 3 до 20 символов')
-        .max(20, 'От 3 до 20 символов')
+        .required(t('errors.required'))
+        .min(3, t('errors.minMax'))
+        .max(20, t('errors.minMax'))
         .test(
           'is unique',
-          'Имя канала должно быть уникальным',
+          t('errors.uniq'),
           (newName) => !channelNames.includes(newName),
         ),
     }),
@@ -50,7 +53,7 @@ function ModalRenameChannel({ onHide }) {
   return (
     <>
       <Modal.Header closeButton>
-        <Modal.Title>Переименовать канал</Modal.Title>
+        <Modal.Title>{t('modals.add.title')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={f.handleSubmit}>
@@ -66,8 +69,8 @@ function ModalRenameChannel({ onHide }) {
             <Form.Control.Feedback type="invalid">{f.errors.channelName}</Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="d-flex justify-content-end">
-            <Button variant="secondary" className="me-2" onClick={onHide}>Отменить</Button>
-            <Button variant="primary" type="submit">Отправить</Button>
+            <Button variant="secondary" className="me-2" onClick={onHide}>{t('modals.cancelBtn')}</Button>
+            <Button variant="primary" type="submit">{t('modals.sendBtn')}</Button>
           </Form.Group>
         </Form>
       </Modal.Body>

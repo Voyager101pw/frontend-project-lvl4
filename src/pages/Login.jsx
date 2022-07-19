@@ -1,11 +1,12 @@
 import React, {
   useRef, useEffect, useContext, useState,
 } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import * as yup from 'yup';
+import { useTranslation } from 'react-i18next';
 
 import routes from '../routes.js';
 import AuthContext from '../contexts/AuthContext.jsx';
@@ -15,6 +16,7 @@ function Login() {
   const [authFailed, setAuthFailed] = useState(false);
   const auth = useContext(AuthContext); // useAuth hook
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const inputRef = useRef();
   useEffect(() => {
@@ -31,7 +33,7 @@ function Login() {
         const { data: token } = await axios.post(routes.loginPath(), authData);
         localStorage.setItem('userId', JSON.stringify(token));
         auth.logIn();
-        navigate('/');
+        navigate(routes.mainPage());
       } catch (error) {
         if (error.isAxiosError && error.response.status === 401) {
           inputRef.current.select();
@@ -58,7 +60,7 @@ function Login() {
                   <img src={logo} alt="logo" className="rounded-circle" />
                 </div>
                 <div className="col-12 col-md-6 mt-3 mt-mb-0">
-                  <h1 className="text-center mb-4">Войти</h1>
+                  <h1 className="text-center mb-4">{t('logIn.title')}</h1>
                   <Form onSubmit={formik.handleSubmit}>
                     <Form.Group className="form-floating mb-3">
                       <Form.Control
@@ -72,7 +74,7 @@ function Login() {
                         ref={inputRef}
                         required
                       />
-                      <Form.Label>Ваш ник</Form.Label>
+                      <Form.Label>{t('logIn.name')}</Form.Label>
                     </Form.Group>
 
                     <Form.Group className="form-floating mb-4">
@@ -87,17 +89,17 @@ function Login() {
                         isInvalid={authFailed}
                         required
                       />
-                      <Form.Label>Пароль</Form.Label>
-                      <Form.Control.Feedback tooltip type="invalid">Неверные имя пользователя или пароль</Form.Control.Feedback>
+                      <Form.Label>{t('logIn.pass')}</Form.Label>
+                      <Form.Control.Feedback tooltip type="invalid">{t('logIn.error.failLogIn')}</Form.Control.Feedback>
                     </Form.Group>
 
-                    <Button type="submit" variant="outline-primary" className="w-100">Войти</Button>
+                    <Button type="submit" variant="outline-primary" className="w-100">{t('logIn.submit')}</Button>
                   </Form>
                 </div>
               </div>
               <div className="card-footer p-4 text-center">
-                <span>Нет аккаунта? </span>
-                <a href="/signup">Регистрация</a>
+                <span>{t('logIn.noAccount')}</span>
+                <Link to={routes.signupPage()}>{t('signUp.title')}</Link>
               </div>
             </div>
           </div>

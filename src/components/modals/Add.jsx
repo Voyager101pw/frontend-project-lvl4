@@ -2,16 +2,18 @@ import React, { useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Form, Button } from 'react-bootstrap';
 import * as yup from 'yup';
-
+import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
-import { selectChannelNames, setCurrentChannelId } from '../../slices/channels/channelsSlice.js';
 
+import { selectChannelNames, setCurrentChannelId } from '../../slices/channels/channelsSlice.js';
 import useSocket from '../../hooks/useSocket.jsx';
 
 function ModalAddChannel({ onHide }) {
   const socket = useSocket();
   const inputRef = useRef();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+
   const channelNames = useSelector(selectChannelNames);
 
   useEffect(() => {
@@ -35,12 +37,12 @@ function ModalAddChannel({ onHide }) {
       channelName: yup
         .string()
         .trim()
-        .required('Обязательное поле')
-        .min(3, 'От 3 до 20 символов')
-        .max(20, 'От 3 до 20 символов')
+        .required(t('errors.required'))
+        .min(3, t('errors.minMax'))
+        .max(20, t('errors.minMax'))
         .test(
           'is unique',
-          'Имя канала должно быть уникальным',
+          t('errors.uniq'),
           (newName) => !channelNames.includes(newName),
         ),
     }),
@@ -49,7 +51,7 @@ function ModalAddChannel({ onHide }) {
   return (
     <>
       <Modal.Header closeButton>
-        <Modal.Title>Добавить канал</Modal.Title>
+        <Modal.Title>{t('modals.add.title')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={f.handleSubmit}>
@@ -65,8 +67,8 @@ function ModalAddChannel({ onHide }) {
             <Form.Control.Feedback type="invalid">{f.errors.channelName}</Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="d-flex justify-content-end">
-            <Button className="me-2" variant="secondary" onClick={onHide}>Отменить</Button>
-            <Button type="submit" variant="primary">Отправить</Button>
+            <Button className="me-2" variant="secondary" onClick={onHide}>{t('modals.cancelBtn')}</Button>
+            <Button type="submit" variant="primary">{t('modals.sendBtn')}</Button>
           </Form.Group>
         </Form>
       </Modal.Body>

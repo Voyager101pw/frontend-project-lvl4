@@ -3,11 +3,13 @@ import { useFormik } from 'formik';
 import { Form, Button } from 'react-bootstrap';
 import * as yup from 'yup';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 import signLogo from '../../public/sign_logo.jpg';
 import routes from '../routes.js';
 import useAuth from '../hooks/useAuth.jsx';
 
 function Sign() {
+  const { t } = useTranslation();
   const auth = useAuth();
 
   const f = useFormik({
@@ -19,17 +21,17 @@ function Sign() {
     validationSchema: yup.object({
       name: yup
         .string()
-        .required('Обязательное поле')
-        .min(3, 'От 3 до 20 символов')
-        .max(20, 'От 3 до 20 символов'),
+        .required(t('errors.required'))
+        .min(3, t('errors.minMax'))
+        .max(20, t('errors.minMax')),
       pass: yup
         .string()
-        .min(6, 'Не менее 6 символов')
-        .required('Обязательное поле'),
+        .min(6, t('errors.least6'))
+        .required(t('errors.required')),
       passConfirm: yup
         .string()
-        .required('Обязательное поле')
-        .test('pass-match', 'Пароли должны совпадать', (passConfirm, form) => passConfirm === form.parent.pass),
+        .required(t('errors.required'))
+        .test('pass-match', t('errors.passMatch'), (passConfirm, form) => passConfirm === form.parent.pass),
     }),
     onSubmit: async ({ name: username, pass: password }, { setErrors }) => {
       try {
@@ -65,7 +67,7 @@ function Sign() {
               <Form onSubmit={f.handleSubmit} className="w-50">
                 <div className="title d-flex justify-content-center">
                   <h1 className="mb-4">
-                    Регистрация
+                    {t('signUp.title')}
                   </h1>
                 </div>
                 <Form.Group className="form-floating mb-3">
@@ -80,7 +82,7 @@ function Sign() {
                     isInvalid={f.errors.name && f.values.name.length}
                     isValid={!f.errors.name && f.values.name.length}
                   />
-                  <Form.Label>Имя пользователя</Form.Label>
+                  <Form.Label>{t('signUp.name')}</Form.Label>
                   <Form.Control.Feedback tooltip type="invalid">{f.errors.name}</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="form-floating mb-3">
@@ -96,7 +98,7 @@ function Sign() {
                     isInvalid={f.errors.pass && f.values.pass.length}
                     onChange={f.handleChange}
                   />
-                  <Form.Label>Пароль</Form.Label>
+                  <Form.Label>{t('signUp.pass')}</Form.Label>
                   <Form.Control.Feedback tooltip type="invalid">{f.errors.pass}</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="form-floating mb-4">
@@ -111,10 +113,10 @@ function Sign() {
                     isInvalid={f.errors.passConfirm && f.values.passConfirm.length}
                     onChange={f.handleChange}
                   />
-                  <Form.Label>Подтвердить пароль</Form.Label>
+                  <Form.Label>{t('signUp.passConfirm')}</Form.Label>
                   <Form.Control.Feedback tooltip type="invalid">{f.errors.passConfirm}</Form.Control.Feedback>
                 </Form.Group>
-                <Button variant="outline-primary w-100" type="submit">Зарегистрироваться</Button>
+                <Button variant="outline-primary w-100" type="submit">{t('signUp.submit')}</Button>
               </Form>
             </div>
           </div>

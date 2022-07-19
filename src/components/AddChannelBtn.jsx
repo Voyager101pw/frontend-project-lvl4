@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { openModal } from '../slices/modal/modalSlice.js';
 
 const iconSVG = (
@@ -11,13 +12,14 @@ const iconSVG = (
 
 function AddChannelBtn() {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const handleOpenModal = () => {
     dispatch(openModal({ type: 'Add' }));
   };
   return (
     <div className="d-flex ps-4 pe-2 mb-2 justify-content-between">
-      <span>Каналы</span>
+      <span>{t('chatPage.channels')}</span>
       <button
         type="button"
         className="text-primary border-0 p-0 btn btn-group-vertical"

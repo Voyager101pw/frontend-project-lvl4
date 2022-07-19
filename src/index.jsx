@@ -3,15 +3,19 @@ import React from 'react';
 import App from './App.jsx';
 import providers from './providers/index.jsx';
 
-const { StoreProvider, AuthProvider, SocketProvider } = providers;
+const {
+  StoreProvider, AuthProvider, SocketProvider, I18nextProvider,
+} = providers;
 
 function initApp() {
   return (
     <SocketProvider>
       <StoreProvider>
-        <AuthProvider>
-          <App />
-        </AuthProvider>
+        <I18nextProvider>
+          <AuthProvider>
+            <App />
+          </AuthProvider>
+        </I18nextProvider>
       </StoreProvider>
     </SocketProvider>
   );

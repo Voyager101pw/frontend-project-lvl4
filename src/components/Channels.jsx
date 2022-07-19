@@ -2,7 +2,7 @@ import React from 'react';
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dropdown, ButtonGroup, Button } from 'react-bootstrap';
-
+import { useTranslation } from 'react-i18next';
 import { openModal } from '../slices/modal/modalSlice';
 import {
   toggleCurrentChannel, selectEntitiesChannels,
@@ -11,6 +11,8 @@ import {
 
 function Channels() {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+
   const channels = useSelector(selectEntitiesChannels);
   const ids = useSelector(selectIdsChannels);
   const idCurrentChanndel = useSelector(selectIdCurrentChannel);
@@ -36,10 +38,10 @@ function Channels() {
                 <Dropdown.Toggle split variant={isSelected ? 'secondary' : 'btn-secondary'} />
                 <Dropdown.Menu>
                   <Dropdown.Item onClick={() => dispatch(openModal({ type: 'Remove', idChannel: id }))}>
-                    Удалить
+                    {t('chatPage.remove')}
                   </Dropdown.Item>
                   <Dropdown.Item onClick={() => dispatch(openModal({ type: 'Rename', idChannel: id }))}>
-                    Переименовать
+                    {t('chatPage.rename')}
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
