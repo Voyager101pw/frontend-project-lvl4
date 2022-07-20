@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
+import filter from 'leo-profanity';
 
 import { selectChannelNames, setCurrentChannelId } from '../../slices/channels/channelsSlice.js';
 import useSocket from '../../hooks/useSocket.jsx';
@@ -45,6 +46,11 @@ function ModalAddChannel({ onHide }) {
           'is unique',
           t('errors.uniq'),
           (newName) => !channelNames.includes(newName),
+        )
+        .test(
+          'contains obscene',
+          t('errors.obscene'),
+          (newName) => !filter.check(newName),
         ),
     }),
   });

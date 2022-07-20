@@ -2,6 +2,7 @@ import React from 'react';
 import {
   BrowserRouter, Routes, Route, Navigate,
 } from 'react-router-dom';
+import filter from 'leo-profanity';
 
 import Chat from './pages/Chat.jsx';
 import Login from './pages/Login.jsx';
@@ -10,6 +11,8 @@ import Navigation from './components/Navigation.jsx';
 
 import useAuth from './hooks/useAuth.jsx';
 import Sign from './pages/SignUp.jsx';
+
+filter.loadDictionary('ru');
 
 function ChatPage() {
   const { loggedIn } = useAuth();

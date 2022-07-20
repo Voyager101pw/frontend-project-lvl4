@@ -55,6 +55,7 @@ const en = {
       required: 'Required field',
       minMax: '3 to 20 characters',
       uniq: 'Channel name must be unique',
+      obscene: 'Should not contain obscene words',
     },
     toasts: {
       add: 'Channel is added 🎉',

@@ -3,6 +3,7 @@ import { Form, Button, InputGroup } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import filter from 'leo-profanity';
 
 import { selectIdCurrentChannel } from '../slices/channels/channelsSlice.js';
 import useSocket from '../hooks/useSocket.jsx';
@@ -46,7 +47,8 @@ function MessageInput() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await socket.promisifyEmit('newMessage', { channelId, username, text });
+      const filtredText = filter.clean(text);
+      await socket.promisifyEmit('newMessage', { channelId, username, text: filtredText });
       clearInput();
     } catch (textError) {
       toast.error(t('toasts.failSendMsg'));
