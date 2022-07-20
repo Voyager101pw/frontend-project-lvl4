@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import useSocket from '../../hooks/useSocket.jsx';
 import { selectEditableId } from '../../slices/modal/modalSlice';
 
@@ -16,10 +17,10 @@ function RemoveChannel({ onHide }) {
     try {
       await socket.promisifyEmit('removeChannel', { id });
       onHide();
-      // success toast
+      toast.warning(t('toasts.remove'));
     } catch (textError) {
       console.warn(textError);
-      // fail toast
+      toast.error(t('toasts.failRemove'));
     }
   };
 

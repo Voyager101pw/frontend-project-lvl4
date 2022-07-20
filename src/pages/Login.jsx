@@ -7,6 +7,7 @@ import { useFormik } from 'formik';
 import axios from 'axios';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 import routes from '../routes.js';
 import AuthContext from '../contexts/AuthContext.jsx';
@@ -40,6 +41,7 @@ function Login() {
           setAuthFailed(true);
           return;
         }
+        toast.error(t('toasts.failLogIn'));
         throw error;
       }
     },

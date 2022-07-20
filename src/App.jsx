@@ -9,7 +9,7 @@ import NotFound from './pages/NotFound.jsx';
 import Navigation from './components/Navigation.jsx';
 
 import useAuth from './hooks/useAuth.jsx';
-import SignUp from './pages/SignUp.jsx';
+import Sign from './pages/SignUp.jsx';
 
 function ChatPage() {
   const { loggedIn } = useAuth();
@@ -23,7 +23,7 @@ function LoginPage() {
 
 function SignUpPage() {
   const { loggedIn } = useAuth();
-  return loggedIn ? <Navigate to="/" /> : <SignUp />;
+  return loggedIn ? <Navigate to="/" /> : <Sign />;
 }
 
 export default function App() {

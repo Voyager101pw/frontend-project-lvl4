@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Form, Button, InputGroup } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 import { selectIdCurrentChannel } from '../slices/channels/channelsSlice.js';
 import useSocket from '../hooks/useSocket.jsx';
@@ -35,6 +36,7 @@ function MessageInput() {
   const { username } = useAuth();
 
   const channelId = useSelector(selectIdCurrentChannel);
+  const clearInput = () => setText('');
 
   useEffect(() => {
     inputRef.current.focus();
@@ -45,11 +47,10 @@ function MessageInput() {
     e.preventDefault();
     try {
       await socket.promisifyEmit('newMessage', { channelId, username, text });
-      setText('');
-      // success toast
+      clearInput();
     } catch (textError) {
+      toast.error(t('toasts.failSendMsg'));
       console.warn(textError);
-      // fail toast
     }
   };
 
@@ -72,6 +73,7 @@ function MessageInput() {
           <Button
             type="submit"
             variant="text outline-secondary btn-group-vertical border-0"
+            disabled={!text.length}
           >
             {svgArrowRight}
           </Button>

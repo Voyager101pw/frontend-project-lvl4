@@ -4,6 +4,7 @@ import { Modal, Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 import { selectChannelById, selectChannelNames } from '../../slices/channels/channelsSlice';
 import { closeModal, selectEditableId } from '../../slices/modal/modalSlice';
@@ -29,10 +30,10 @@ function ModalRenameChannel({ onHide }) {
       try {
         await socket.promisifyEmit('renameChannel', { id: idEditableChannel, name: channelName });
         dispatch(closeModal());
-        // success toast
+        toast.info(t('toasts.rename'));
       } catch (textError) {
         console.warn(textError);
-        // fail toast
+        toast.error(t('toasts.failRename'));
       }
     },
     validationSchema: yup.object({
@@ -53,7 +54,7 @@ function ModalRenameChannel({ onHide }) {
   return (
     <>
       <Modal.Header closeButton>
-        <Modal.Title>{t('modals.add.title')}</Modal.Title>
+        <Modal.Title>{t('modals.rename.title')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={f.handleSubmit}>

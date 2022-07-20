@@ -4,6 +4,7 @@ import { Modal, Form, Button } from 'react-bootstrap';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
+import { toast } from 'react-toastify';
 
 import { selectChannelNames, setCurrentChannelId } from '../../slices/channels/channelsSlice.js';
 import useSocket from '../../hooks/useSocket.jsx';
@@ -27,10 +28,10 @@ function ModalAddChannel({ onHide }) {
         const { id } = await socket.promisifyEmit('newChannel', { name }); // id - id added channel
         onHide();
         dispatch(setCurrentChannelId(id));
-        // success toast
+        toast.success(t('toasts.add'));
       } catch (textError) {
         console.warn(textError);
-        // fail toast
+        toast.error(t('toasts.failAdd'));
       }
     },
     validationSchema: yup.object({

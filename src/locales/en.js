@@ -56,6 +56,16 @@ const en = {
       minMax: '3 to 20 characters',
       uniq: 'Channel name must be unique',
     },
+    toasts: {
+      add: 'Channel is added 🎉',
+      rename: 'Channel renamed.',
+      remove: 'Channel removed',
+      failAdd: 'Error channel adding',
+      failRename: 'Failed to rename channel',
+      failRemove: 'Failed to delete channel',
+      failSendMsg: 'Failed to send message',
+      failLogIn: 'No connection',
+    },
   },
 };
 
