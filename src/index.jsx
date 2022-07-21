@@ -6,21 +6,24 @@ import providers from './providers/index.jsx';
 import 'react-toastify/dist/ReactToastify.css';
 
 const {
-  StoreProvider, AuthProvider, SocketProvider, I18nextProvider,
+  StoreProvider, AuthProvider, SocketProvider,
+  I18nextProvider, RollbarProvider,
 } = providers;
 
 function initApp() {
   return (
-    <SocketProvider>
-      <StoreProvider>
-        <I18nextProvider>
-          <AuthProvider>
-            <ToastContainer />
-            <App />
-          </AuthProvider>
-        </I18nextProvider>
-      </StoreProvider>
-    </SocketProvider>
+    <RollbarProvider>
+      <SocketProvider>
+        <StoreProvider>
+          <I18nextProvider>
+            <AuthProvider>
+              <ToastContainer />
+              <App />
+            </AuthProvider>
+          </I18nextProvider>
+        </StoreProvider>
+      </SocketProvider>
+    </RollbarProvider>
   );
 }
 

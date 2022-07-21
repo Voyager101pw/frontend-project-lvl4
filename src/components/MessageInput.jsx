@@ -46,6 +46,7 @@ function MessageInput() {
   const handleChange = (e) => setText(e.target.value);
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // window.onerror("TestError: Hello world", window.location.href)
     try {
       const filtredText = filter.clean(text);
       await socket.promisifyEmit('newMessage', { channelId, username, text: filtredText });
