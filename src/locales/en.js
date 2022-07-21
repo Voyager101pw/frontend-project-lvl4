@@ -65,7 +65,7 @@ const en = {
       failRename: 'Failed to rename channel',
       failRemove: 'Failed to delete channel',
       failSendMsg: 'Failed to send message',
-      failLogIn: 'No connection',
+      failLogIn: 'Connection error',
     },
   },
 };
