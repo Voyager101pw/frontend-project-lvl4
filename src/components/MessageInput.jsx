@@ -72,6 +72,7 @@ function MessageInput() {
             value={text}
             onChange={handleChange}
             ref={inputRef}
+            aria-label="Новое сообщение"
           />
           <Button
             type="submit"

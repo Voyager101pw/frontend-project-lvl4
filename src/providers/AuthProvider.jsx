@@ -19,7 +19,7 @@ function AuthProvider({ children }) {
   // https://github.com/jsx-eslint/eslint-plugin-react/blob/master/docs/rules/jsx-no-constructed-context-values.md
   const value = useMemo(() => ({
     username, loggedIn, logIn, logOut,
-  }), [loggedIn]);
+  }), [loggedIn, username]);
 
   return (
     <AuthContext.Provider value={value}>

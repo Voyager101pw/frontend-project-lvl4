@@ -2,3 +2,5 @@ node_modules
 dist
 .vscode
 .env
+__tests__/10-application.test.js
+src/mockData.js

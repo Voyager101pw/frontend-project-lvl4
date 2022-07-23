@@ -26,7 +26,7 @@ function ModalAddChannel({ onHide }) {
     initialValues: { channelName: '' },
     onSubmit: async ({ channelName: name }) => {
       try {
-        const { id } = await socket.promisifyEmit('newChannel', { name }); // id - id added channel
+        const { id } = await socket.promisifyEmit('newChannel', { name });
         onHide();
         dispatch(setCurrentChannelId(id));
         toast.success(t('toasts.add'));
@@ -65,12 +65,14 @@ function ModalAddChannel({ onHide }) {
           <Form.Group>
             <Form.Control
               className="mb-2"
+              id="channelName"
               name="channelName"
               value={f.values.channelName}
               isInvalid={f.errors.channelName}
               onChange={f.handleChange}
               ref={inputRef}
             />
+            <Form.Label className="visually-hidden" htmlFor="channelName">Имя канала</Form.Label>
             <Form.Control.Feedback type="invalid">{f.errors.channelName}</Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="d-flex justify-content-end">

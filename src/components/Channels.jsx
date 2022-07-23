@@ -1,7 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import { Dropdown, ButtonGroup, Button } from 'react-bootstrap';
+import { Dropdown, ButtonGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { openModal } from '../slices/modal/modalSlice';
 import {
@@ -25,27 +25,28 @@ function Channels() {
   const items = ids.map((id) => {
     const { name: channelName, removable } = channels[id];
     const isSelected = id === idCurrentChanndel;
-    const channelClass = cn('btn w-100 rounded-0 d-flex', { 'btn-secondary': isSelected });
+    const channelClass = cn('btn w-100 rounded-0 text-start text-truncate', { 'btn-secondary': isSelected });
     return (
-      <li className="nav-item" key={id}>
+      <li className="nav-item w-100" key={id}>
         { removable
           ? (
-            <div role="group" className="d-flex ">
-              <Dropdown as={ButtonGroup} className="w-100">
-                <Button type="button" variant={channelClass} onClick={selectChannel(id)}>
-                  {`# ${channelName}`}
-                </Button>
-                <Dropdown.Toggle split variant={isSelected ? 'secondary' : 'btn-secondary'} />
-                <Dropdown.Menu>
-                  <Dropdown.Item onClick={() => dispatch(openModal({ type: 'Remove', idChannel: id }))}>
-                    {t('chatPage.remove')}
-                  </Dropdown.Item>
-                  <Dropdown.Item onClick={() => dispatch(openModal({ type: 'Rename', idChannel: id }))}>
-                    {t('chatPage.rename')}
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </div>
+            <Dropdown as={ButtonGroup} className="d-flex">
+              <button type="button" className={channelClass} onClick={selectChannel(id)}>
+                <span className="me-1">#</span>
+                {channelName}
+              </button>
+              <Dropdown.Toggle split variant={isSelected ? 'secondary' : 'btn-secondary'}>
+                <span className="visually-hidden">Управление каналом</span>
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={() => dispatch(openModal({ type: 'Remove', idChannel: id }))}>
+                  {t('chatPage.remove')}
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => dispatch(openModal({ type: 'Rename', idChannel: id }))}>
+                  {t('chatPage.rename')}
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           )
           : (
             <button type="button" className={channelClass} onClick={selectChannel(id)}>

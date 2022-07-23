@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import {
   createSlice,
   createEntityAdapter, // Normalized structure, CRUD reducers, ready selectors form normalize struc.
