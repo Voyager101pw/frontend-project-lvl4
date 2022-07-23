@@ -26,8 +26,8 @@ function Login() {
 
   const formik = useFormik({
     initialValues: {
-      username: 'admin',
-      password: 'admin',
+      username: '',
+      password: '',
     },
     onSubmit: async (authData) => {
       try {
@@ -76,7 +76,7 @@ function Login() {
                         ref={inputRef}
                         required
                       />
-                      <Form.Label>{t('logIn.name')}</Form.Label>
+                      <Form.Label htmlFor="username">{t('logIn.name')}</Form.Label>
                     </Form.Group>
 
                     <Form.Group className="form-floating mb-4">
@@ -91,7 +91,7 @@ function Login() {
                         isInvalid={authFailed}
                         required
                       />
-                      <Form.Label>{t('logIn.pass')}</Form.Label>
+                      <Form.Label htmlFor="password">{t('logIn.pass')}</Form.Label>
                       <Form.Control.Feedback tooltip type="invalid">{t('logIn.error.failLogIn')}</Form.Control.Feedback>
                     </Form.Group>
 

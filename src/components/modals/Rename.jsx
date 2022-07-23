@@ -21,7 +21,7 @@ function ModalRenameChannel({ onHide }) {
   const channelNames = useSelector(selectChannelNames);
 
   useEffect(() => {
-    inputRef.current.focus();
+    inputRef.current.select();
   }, []);
 
   const f = useFormik({
@@ -60,13 +60,15 @@ function ModalRenameChannel({ onHide }) {
         <Form onSubmit={f.handleSubmit}>
           <Form.Group>
             <Form.Control
-              className="mb-2"
+              id="channelName"
               name="channelName"
+              className="mb-2"
               value={f.values.channelName}
               isInvalid={f.errors.channelName}
               onChange={f.handleChange}
               ref={inputRef}
             />
+            <Form.Label className="visually-hidden" htmlFor="channelName">Имя канала</Form.Label>
             <Form.Control.Feedback type="invalid">{f.errors.channelName}</Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="d-flex justify-content-end">

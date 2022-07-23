@@ -71,6 +71,7 @@ function ModalAddChannel({ onHide }) {
               onChange={f.handleChange}
               ref={inputRef}
             />
+            <Form.Label className="visually-hidden" htmlFor="channelName">Имя канала</Form.Label>
             <Form.Control.Feedback type="invalid">{f.errors.channelName}</Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="d-flex justify-content-end">

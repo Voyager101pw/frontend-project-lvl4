@@ -33,9 +33,12 @@ function Channels() {
             <div role="group" className="d-flex ">
               <Dropdown as={ButtonGroup} className="w-100">
                 <Button type="button" variant={channelClass} onClick={selectChannel(id)}>
-                  {`# ${channelName}`}
+                  <span className="me-1">#</span>
+                  {channelName}
                 </Button>
-                <Dropdown.Toggle split variant={isSelected ? 'secondary' : 'btn-secondary'} />
+                <Dropdown.Toggle split variant={isSelected ? 'secondary' : 'btn-secondary'}>
+                  <span className="visually-hidden">Управление каналом</span>
+                </Dropdown.Toggle>
                 <Dropdown.Menu>
                   <Dropdown.Item onClick={() => dispatch(openModal({ type: 'Remove', idChannel: id }))}>
                     {t('chatPage.remove')}

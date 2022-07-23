@@ -32,7 +32,6 @@ export default function Navi() {
               onClick={() => {
                 logOut();
                 navigate(routes.loginPage());
-                i18n.changeLanguage('en');
               }}
             >
               {t('chatPage.exit')}

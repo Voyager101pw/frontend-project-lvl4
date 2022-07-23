@@ -26,6 +26,7 @@ function AddChannelBtn() {
         onClick={handleOpenModal}
       >
         {iconSVG}
+        <span className="visually-hidden">+</span>
       </button>
     </div>
   );

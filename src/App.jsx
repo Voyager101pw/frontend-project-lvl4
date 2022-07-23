@@ -12,7 +12,7 @@ import Navigation from './components/Navigation.jsx';
 import useAuth from './hooks/useAuth.jsx';
 import Sign from './pages/SignUp.jsx';
 
-filter.loadDictionary('ru');
+filter.loadDictionary(['ru', 'en']);
 
 function ChatPage() {
   const { loggedIn } = useAuth();

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { Form, Button } from 'react-bootstrap';
 import * as yup from 'yup';
@@ -11,6 +11,11 @@ import useAuth from '../hooks/useAuth.jsx';
 function Sign() {
   const { t } = useTranslation();
   const auth = useAuth();
+  const inputRef = useRef();
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   const f = useFormik({
     initialValues: {
@@ -65,11 +70,9 @@ function Sign() {
               </div>
 
               <Form onSubmit={f.handleSubmit} className="w-50">
-                <div className="title d-flex justify-content-center">
-                  <h1 className="mb-4">
-                    {t('signUp.title')}
-                  </h1>
-                </div>
+                <h1 className="text-center mb-4">
+                  {t('signUp.title')}
+                </h1>
                 <Form.Group className="form-floating mb-3">
                   <Form.Control
                     id="name"
@@ -77,13 +80,14 @@ function Sign() {
                     autoComplete="username"
                     value={f.values.name}
                     required
-                    placeholder="Имя пользователя"
+                    placeholder={t('signUp.name')}
                     onChange={f.handleChange}
                     isInvalid={f.errors.name && f.values.name.length}
                     isValid={!f.errors.name && f.values.name.length}
+                    ref={inputRef}
                   />
-                  <Form.Label>{t('signUp.name')}</Form.Label>
-                  <Form.Control.Feedback tooltip type="invalid">{f.errors.name}</Form.Control.Feedback>
+                  <Form.Label htmlFor="name">{t('signUp.name')}</Form.Label>
+                  <Form.Control.Feedback tooltip type="invalid" placement="right">{f.errors.name}</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="form-floating mb-3">
                   <Form.Control
@@ -93,12 +97,12 @@ function Sign() {
                     autoComplete="password"
                     value={f.values.pass}
                     required
-                    placeholder="Пароль"
+                    placeholder={t('signUp.pass')}
                     isValid={!f.errors.pass && f.values.pass.length}
                     isInvalid={f.errors.pass && f.values.pass.length}
                     onChange={f.handleChange}
                   />
-                  <Form.Label>{t('signUp.pass')}</Form.Label>
+                  <Form.Label htmlFor="pass">{t('signUp.pass')}</Form.Label>
                   <Form.Control.Feedback tooltip type="invalid">{f.errors.pass}</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="form-floating mb-4">
@@ -108,12 +112,12 @@ function Sign() {
                     type="password"
                     value={f.values.passConfirm}
                     required
-                    placeholder="Подтвердить пароль"
+                    placeholder={t('signUp.passConfirm')}
                     isValid={!f.errors.passConfirm && f.values.passConfirm.length}
                     isInvalid={f.errors.passConfirm && f.values.passConfirm.length}
                     onChange={f.handleChange}
                   />
-                  <Form.Label>{t('signUp.passConfirm')}</Form.Label>
+                  <Form.Label htmlFor="passConfirm">{t('signUp.passConfirm')}</Form.Label>
                   <Form.Control.Feedback tooltip type="invalid">{f.errors.passConfirm}</Form.Control.Feedback>
                 </Form.Group>
                 <Button variant="outline-primary w-100" type="submit">{t('signUp.submit')}</Button>
