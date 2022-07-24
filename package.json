@@ -8,7 +8,7 @@
     "test": "jest",
     "prebuild": "rm -rf dist",
     "build": "webpack",
-    "start": "fastify start server/plugin.js -l info -P -a 0.0.0.0"
+    "start": "heroku local -f Procfile.dev"
   },
   "jest": {
     "transform": {}
