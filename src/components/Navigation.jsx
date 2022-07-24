@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useContext } from 'react';
 import {
   Navbar, Container, Button, ButtonGroup,
@@ -22,7 +23,7 @@ export default function Navi() {
           <Navbar.Brand as={Link} to={routes.mainPage()}>Hexlet Chat</Navbar.Brand>
           <ButtonGroup>
             <div className="d-flex pe-3 align-items-center">
-              <Link to="#" onClick={changeLocale}>ru</Link>
+              <Link role="menuitem" to="#" onClick={changeLocale}>ru</Link>
               <span className="px-1">/</span>
               <Link to="#" onClick={changeLocale}>en</Link>
             </div>
