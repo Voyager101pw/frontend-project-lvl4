@@ -1,7 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import { Dropdown, ButtonGroup, Button } from 'react-bootstrap';
+import { Dropdown, ButtonGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { openModal } from '../slices/modal/modalSlice';
 import {

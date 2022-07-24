@@ -65,12 +65,12 @@ function ModalAddChannel({ onHide }) {
           <Form.Group>
             <Form.Control
               className="mb-2"
+              id="channelName"
               name="channelName"
               value={f.values.channelName}
               isInvalid={f.errors.channelName}
               onChange={f.handleChange}
               ref={inputRef}
-              onKeyDown={(e) => e.code === 'Enter' && f.handleSubmit(e)} // для тестов
             />
             <Form.Label className="visually-hidden" htmlFor="channelName">Имя канала</Form.Label>
             <Form.Control.Feedback type="invalid">{f.errors.channelName}</Form.Control.Feedback>
