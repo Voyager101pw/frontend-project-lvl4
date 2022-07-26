@@ -3,15 +3,10 @@ import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import routes from '../routes.js';
 
-// MOCK
-// import {
-//   mockChannels, mockMessages, mockCurrentChannelId, mockModal,
-// } from '../mockData.js';
-
 import { addManyChannels, setCurrentChannelId } from '../slices/channels/channelsSlice.js';
 import { addManyMessages } from '../slices/messages/messagesSlice.js';
 
-import ShowModal from '../components/modals/index.jsx';
+import ShowModal from '../components/Modal.jsx';
 import AddChannelBtn from '../components/AddChannelBtn.jsx';
 import Channels from '../components/Channels.jsx';
 import HeaderChannel from '../components/HeaderChannel.jsx';
@@ -29,18 +24,13 @@ export default function Home() {
       // Если вы используете React 18, вам не нужно использовать batch API.
       // React 18 автоматически группирует все обновления состояния, независимо
       // от того, где они находятся в очереди.
-      // dispatch(setCurrentChannelId(mockCurrentChannelId));
-      // dispatch(addManyChannels(mockChannels));
-      // dispatch(addManyMessages(mockMessages));
-      // dispatch(addManyProps(mockModal));
-      dispatch(addManyChannels(channels));
-      dispatch(addManyMessages(messages));
-      dispatch(setCurrentChannelId(currentChannelId));
-      // dispatch(addManyProps(mockModal));
       // batch() - позволяет объединять любые обновления React в такте цикла событий
       // в один проход рендеринга. React уже использует это внутри для собственных
       // обратных вызовов обработчиков событий.
       // https://react-redux.js.org/api/batch
+      dispatch(addManyChannels(channels));
+      dispatch(addManyMessages(messages));
+      dispatch(setCurrentChannelId(currentChannelId));
     };
     fetchData();
   }, [dispatch]);
