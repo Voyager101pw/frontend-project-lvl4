@@ -4,26 +4,25 @@ const en = {
       ru: 'Russian',
       en: 'English',
     },
-    signUp: {
-      title: 'Sign Up',
-      name: 'Username',
-      pass: 'Password',
+    signup: {
+      title: 'Sign up',
+      username: 'Username',
+      password: 'Password',
       passConfirm: 'Confirm password',
       submit: 'Create an Account',
       errors: {
-        notUniq: 'This user is already registered',
+        userExist: 'This user is already registered',
         someError: 'The request ended with an error',
       },
     },
-    logIn: {
-      title: 'Log in',
-      name: 'Your username',
-      pass: 'Your password',
-      submit: 'Log in',
+    login: {
+      title: 'Login',
+      username: 'Your username',
+      password: 'Your password',
+      submit: 'Login',
       noAccount: 'New to hexlet chat? ',
-      error: {
-        failLogIn: 'Your username or password is not correct',
-      },
+      registration: 'Sign up',
+      failLogin: 'Your username or password is not correct',
     },
     chatPage: {
       exit: 'Sign out',
@@ -65,7 +64,10 @@ const en = {
       failRename: 'Failed to rename channel',
       failRemove: 'Failed to delete channel',
       failSendMsg: 'Failed to send message',
-      failLogIn: 'Connection error',
+      failLogin: 'Try again! 😉',
+      successLogin: 'Welcome back',
+      successSignup: 'Welcome',
+      errorNetwork: 'Error connection',
     },
   },
 };
